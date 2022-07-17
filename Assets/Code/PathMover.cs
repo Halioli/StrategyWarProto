@@ -11,18 +11,11 @@ public class PathMover : MonoBehaviour
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-
-        FindObjectOfType<PathCreator>().OnNewPathCreated += SetPoints;
     }
 
     private void Update()
     {
         UpdatePathing();
-    }
-
-    private void SetPoints(IEnumerable<Vector3> points)
-    {
-        pathPoints = new Queue<Vector3>(points);
     }
 
     private void UpdatePathing()
@@ -40,5 +33,10 @@ public class PathMover : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    public void SetPoints(IEnumerable<Vector3> points)
+    {
+        pathPoints = new Queue<Vector3>(points);
     }
 }

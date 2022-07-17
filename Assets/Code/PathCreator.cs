@@ -9,13 +9,13 @@ public class PathCreator : MonoBehaviour
 {
     private static float MIN_DISTANCE = 1f;
 
+    private PathMover pathMover;
     private LineRenderer lineRenderer;
     private List<Vector3> points = new List<Vector3>();
 
-    public Action<IEnumerable<Vector3>> OnNewPathCreated = delegate { };
-
     private void Awake()
     {
+        pathMover = GetComponentInParent<PathMover>();
         lineRenderer = GetComponent<LineRenderer>();
     }
 
@@ -24,8 +24,7 @@ public class PathCreator : MonoBehaviour
         // Click
         if (Input.GetButtonDown("Fire1"))
         {
-            points.Clear();
-            lineRenderer.positionCount = 0;
+            ClearLine();
         }
 
 
@@ -48,7 +47,7 @@ public class PathCreator : MonoBehaviour
         }
         else if (Input.GetButtonUp("Fire1"))
         {
-            OnNewPathCreated(points);
+            pathMover.SetPoints(points);
         }
     }
 
@@ -58,5 +57,11 @@ public class PathCreator : MonoBehaviour
             return Mathf.Infinity;
 
         return Vector3.Distance(points[points.Count - 1], point);
+    }
+
+    public void ClearLine()
+    {
+        points.Clear();
+        lineRenderer.positionCount = 0;
     }
 }
